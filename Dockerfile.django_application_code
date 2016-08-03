@@ -1,0 +1,6 @@
+FROM debian:jessie
+
+RUN mkdir /code
+WORKDIR /code
+
+CMD ["/bin/bash"]

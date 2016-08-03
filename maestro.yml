@@ -1,0 +1,49 @@
+---
+
+__maestro:
+    schema: 2
+
+name: helloworld
+
+ship_defaults:
+    socket_path: /var/run/docker.sock
+    timeout: 60
+
+ships:
+    localhost:
+        ip: 172.17.0.1
+
+services:
+    db:
+        image: mariadb:10
+        instances:
+            db_1:
+                ship: localhost
+                ports:
+                    mysql:
+                        exposed: 3306
+                        external: 1306
+                lifecycle:
+                    running: [{type: tcp, port: mysql}]
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+    django_application_code:
+        image: debian:jessie
+        instances:
+            django_code_1:
+                ship: localhost
+                volumes:
+                    {{ env.PWD }}: /code
+    nginx_uwsgi_django:
+        image: nginx_uwsgi_django
+        requires: [ db, django_application_code ]
+        instances:
+            nginx_uwsgi_django_1:
+                ship: localhost
+                ports:
+                    http:
+                        exposed: 80
+                        external: 1080
+                volumes_from: [ django_code_1 ]
+                lifecycle:
+                    running: [{type: tcp, port: http}]

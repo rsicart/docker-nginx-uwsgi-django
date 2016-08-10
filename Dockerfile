@@ -13,7 +13,7 @@ RUN apt-get update && \
 			vim
 
 RUN pip3 install \
-		PyMySQL3 \
+		PyMySQL \
 		uwsgi \
 		django
 

@@ -3,7 +3,7 @@
 ## Introduction
 
 This repository contains a Dockerfile to create a container running nginx and uwsgi. They are ready to be configured to execute a django application.
-As a bonus, using maestro-ng, you can get a mariadb container too, to be used by Django.
+As a **bonus**, using maestro-ng, you can get a mariadb containers (using a data-only container pattern) too, to be used by Django.
 
 ## Getting started
 

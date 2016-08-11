@@ -14,15 +14,24 @@ ships:
         ip: 172.17.0.1
 
 services:
+    db_persistence:
+        image: debian:jessie
+        instances:
+            db_1_data:
+                ship: localhost
+                volumes:
+                    {{ env.HOME }}/docker-data-containers/db_1_data: /var/lib/mysql
     db:
         image: mariadb:10
+        requires: [ db_persistence ]
         instances:
             db_1:
                 ship: localhost
                 ports:
                     mysql:
                         exposed: 3306
-                        external: 1306
+                        external: 3306
+                volumes_from: [ db_1_data ]
                 lifecycle:
                     running: [{type: tcp, port: mysql}]
                 env:
@@ -43,7 +52,7 @@ services:
                 ports:
                     http:
                         exposed: 80
-                        external: 1080
+                        external: 80
                 volumes_from: [ django_code_1 ]
                 lifecycle:
                     running: [{type: tcp, port: http}]

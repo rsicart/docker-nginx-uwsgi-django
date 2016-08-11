@@ -15,7 +15,8 @@ RUN apt-get update && \
 RUN pip3 install \
 		PyMySQL \
 		uwsgi \
-		django
+		django \
+		pytz
 
 RUN mkdir /code
 WORKDIR /code

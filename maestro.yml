@@ -21,6 +21,8 @@ services:
                 ship: localhost
                 volumes:
                     {{ env.HOME }}/docker-data-containers/db_1_data: /var/lib/mysql
+                env:
+                    LANG: en_US.UTF-8
     db:
         image: mariadb:10
         requires: [ db_persistence ]
@@ -36,6 +38,7 @@ services:
                     running: [{type: tcp, port: mysql}]
                 env:
                     MYSQL_ROOT_PASSWORD: root
+                    LANG: en_US.UTF-8
     django_application_code:
         image: debian:jessie
         instances:
@@ -43,6 +46,8 @@ services:
                 ship: localhost
                 volumes:
                     {{ env.PWD }}: /code
+                env:
+                    LANG: en_US.UTF-8
     nginx_uwsgi_django:
         image: nginx_uwsgi_django
         requires: [ db, django_application_code ]
@@ -56,3 +61,5 @@ services:
                 volumes_from: [ django_code_1 ]
                 lifecycle:
                     running: [{type: tcp, port: http}]
+                env:
+                    LANG: en_US.UTF-8
